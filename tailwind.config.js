@@ -6,7 +6,14 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+        primary: "var(--primary-color)",
+        sidebar: "var(--sidebar-color)",
+      },
+    },
   },
   plugins: [],
 }

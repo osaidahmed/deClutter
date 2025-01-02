@@ -12,7 +12,7 @@ const Sidebar = () => {
     };
     return (
         <div className = "flex h-screen">
-            <div className={`transistion-all duration-300 ease-in-out ${isOpen ? "w-80" : "w-24"} bg-sidebar text-white h-screen p-4`}>
+            <div className={`transition-all duration-300 ease-in-out ${isOpen ? "w-80" : "w-24"} bg-sidebar text-white h-screen p-4`}>
                 <button onClick={toggleSidebar} className="bg-sidebar-500 text-white p-2 rounded-md mb-4">{isOpen ? "Collapse" : "Expand"}</button>
                 {isOpen && (
                     <div>
