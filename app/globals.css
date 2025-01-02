@@ -39,7 +39,4 @@ button {
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
-  &:hover {
-  background: var(--primary-color);
-  }
 }

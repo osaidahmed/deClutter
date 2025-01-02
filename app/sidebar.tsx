@@ -28,26 +28,30 @@ const Sidebar = () => {
     };
 
     return (
-        <div className = "flex h-screen">
-            <div className={`transition-all duration-300 ease-in-out ${isOpen ? "w-80" : "w-24"} bg-sidebar text-white h-screen p-4`}>
-                <button onClick={toggleSidebar} className="transistion-all duration-300 bg-primary hover:bg-gray-200 p-2 rounded-md mb-4">{isOpen ? "Collapse" : "Expand"}</button>
+        <div className="flex h-screen">
+            <div className={`relative transition-transform duration-300 ease-in-out transform ${isOpen ? "translate-x-0" : "-translate-x-full"} bg-sidebar text-white h-screen p-4 w-80`}>
                 {isOpen && (
-                    <div>
-                        <input type="text" value={pageName} onChange={(e) => setPagename(e.target.value)} placeholder="Add a Page" className="p-2 rounded-md mb-4 text-black mr-4"/>
-                        <button onClick={addSidebarEntry} className="transistion-all duration-300 bg-primary hover:bg-gray-200 text-white p-2 rounded-md mb-4">
-                            <img src="../assets/add.png" className="w-6 h-6"/>
-                        </button>
+                    <div className="mt-16">
+                        <div className="flex items-center mb-4">
+                            <input type="text" value={pageName} onChange={(e) => setPagename(e.target.value)} placeholder="Add a Page" className="p-2 rounded-md text-black mr-4 flex-grow"/>
+                            <button onClick={addSidebarEntry} className="transition-all duration-300 bg-primary hover:bg-gray-200 text-white p-2 rounded-md">
+                                <svg className="w-6 h-6 text-white hover:text-gray-200" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
                         <h2 className="text-xl mb-4">Pages</h2>
                         <ul>
-                            {pages.map((pages, index) => (
-                                <li key= {index} className="mb-2 text-black underline hover:underline-offset-4 hover:text-primary">
-                                    <a href={`/pages/${pages}`}>{pages}</a>
-                                </li>  
-                            ))};
+                            {pages.map((page, index) => (
+                                <li key={index} className="mb-2 text-black underline hover:underline-offset-4 hover:text-primary">
+                                    <a href={`/pages/${page}`}>{page}</a>
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 )}
-            </div> 
+            </div>
+            <button onClick={toggleSidebar} className="fixed top-4 left-4 transition-all duration-300 bg-primary hover:bg-gray-200 p-2 rounded-md z-10">{isOpen ? "Collapse" : "Expand"}</button>
         </div>
     );
 };

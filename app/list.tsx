@@ -32,7 +32,7 @@ const List = () => {
                 <input type = "text" value = {url} onChange = {(e) => setUrl(e.target.value)} placeholder="URL"/>
                 <input type = "text" value = {tag} onChange = {(e) => setTag(e.target.value)} placeholder="Tag"/>
 
-                <button onClick = {addWebsite}> Add Website</button>
+                <button onClick = {addWebsite} className="transition-all duration-300 hover:bg-gray-200"> Add Website</button>
             </div>
 
             <ul>
