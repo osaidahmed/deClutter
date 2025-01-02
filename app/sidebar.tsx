@@ -34,7 +34,9 @@ const Sidebar = () => {
                 {isOpen && (
                     <div>
                         <input type="text" value={pageName} onChange={(e) => setPagename(e.target.value)} placeholder="Add a Page" className="p-2 rounded-md mb-4 text-black mr-4"/>
-                        <button onClick={addSidebarEntry} className="transistion-all duration-300 bg-primary hover:bg-gray-200 text-white p-2 rounded-md mb-4">Add List</button>
+                        <button onClick={addSidebarEntry} className="transistion-all duration-300 bg-primary hover:bg-gray-200 text-white p-2 rounded-md mb-4">
+                            <img src="../assets/add.png" className="w-6 h-6"/>
+                        </button>
                         <h2 className="text-xl mb-4">Pages</h2>
                         <ul>
                             {pages.map((pages, index) => (
