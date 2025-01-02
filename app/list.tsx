@@ -27,12 +27,12 @@ const List = () => {
     return (
         <div className="flex flex-col space-y-4">
             <div>
-            <h2 className = "text-xl">Lists</h2>
-            <input type = "text" value = {name} onChange = {(e) => setName(e.target.value)} placeholder="Name"/>
-            <input type = "text" value = {url} onChange = {(e) => setUrl(e.target.value)} placeholder="URL"/>
-            <input type = "text" value = {tag} onChange = {(e) => setTag(e.target.value)} placeholder="Tag"/>
+                <h2 className = "text-2xl text-center mb-4">Lists</h2>
+                <input type = "text" value = {name} onChange = {(e) => setName(e.target.value)} placeholder="Name"/>
+                <input type = "text" value = {url} onChange = {(e) => setUrl(e.target.value)} placeholder="URL"/>
+                <input type = "text" value = {tag} onChange = {(e) => setTag(e.target.value)} placeholder="Tag"/>
 
-            <button onClick = {addWebsite}> Add Website</button>
+                <button onClick = {addWebsite}> Add Website</button>
             </div>
 
             <ul>
