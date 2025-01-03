@@ -1,8 +1,3 @@
-/*
-Manage a list of websites that the user appends to the list. 
-Dynamic array of items where each item is an object storing website information
-*/
-
 "use client";
 import { useState, useEffect } from "react";
 
@@ -16,72 +11,88 @@ interface ListProps {
     pageId: string;
 }
 
-
 const List = ({ pageId }: ListProps) => {
-    const [name, setName] = useState<string>(""); // Add a name to the website
-    const [url, setUrl] = useState<string>(""); // Add a URL to the website
-    const [tag, setTag] = useState<string>(""); // Add a tag to the website
+    const [name, setName] = useState<string>("");
+    const [url, setUrl] = useState<string>("");
+    const [tag, setTag] = useState<string>("");
     const [websites, setWebsites] = useState<{ [key: string]: Website[] }>({});
 
-    // Load the websites from the local storage
+    // Load websites on mount
     useEffect(() => {
-        const savedWebsites = JSON.parse(localStorage.getItem("websites") || "{}");
-        setWebsites(savedWebsites);
-    }, []);
+        const loadWebsites = () => {
+            try {
+                const data = localStorage.getItem("websites");
+                console.log("Raw localStorage data:", data);
 
-    //  Save the websites to the local storage
-    useEffect(() => {
-        localStorage.setItem("websites", JSON.stringify(websites));
-    }, [websites]);
+                if (data) {
+                    const savedWebsites = JSON.parse(data);
+                    // Ensure the structure is correct
+                    if (typeof savedWebsites === 'object') {
+                        setWebsites(savedWebsites);
+                    } else {
+                        console.error("Invalid data structure in localStorage");
+                        setWebsites({ [pageId]: [] });
+                    }
+                } else {
+                    setWebsites({ [pageId]: [] });
+                }
+            } catch (error) {
+                console.error("Error loading websites:", error);
+                setWebsites({ [pageId]: [] });
+            }
+        };
 
-    // If the pageId is not in the websites object, add it
-    useEffect(() => {
-        if (pageId && !websites[pageId]) {
-            setWebsites((prev) => ({
-                ...prev,
-                [pageId]: [],
-            }));
-        }
-    }, [pageId, websites]);
+        loadWebsites();
+    }, [pageId]);
 
-    // Function to add a website to the list
     const addWebsite = () => {
-        if (pageId && name && url) {
-            setWebsites((prev) => ({
-                ...prev,
-                [pageId]: [...(prev[pageId] || []), { name, url, tag }],
-            }));
+        if (!pageId || !name || !url) return;
+
+        const updatedWebsites = {
+            ...websites,
+            [pageId]: [...(websites[pageId] || []), { name, url, tag }]
+        };
+
+        try {
+            localStorage.setItem("websites", JSON.stringify(updatedWebsites));
+            setWebsites(updatedWebsites);
             setName("");
             setUrl("");
             setTag("");
+        } catch (error) {
+            console.error("Error saving website:", error);
         }
     };
+
+    // Debug current state
+    useEffect(() => {
+        console.log("Current pageId:", pageId);
+        console.log("Current websites state:", websites);
+        console.log("Current page websites:", websites[pageId]);
+    }, [websites, pageId]);
+
     return (
         <div className="flex flex-col space-y-4">
             <div>
-                <h2 className = "text-2xl text-center mb-4">Lists for {pageId}</h2>
-                <input type = "text" value = {name} onChange = {(e) => setName(e.target.value)} placeholder="Name"/>
-                <input type = "text" value = {url} onChange = {(e) => setUrl(e.target.value)} placeholder="URL"/>
-                <input type = "text" value = {tag} onChange = {(e) => setTag(e.target.value)} placeholder="Tag"/>
-
-                <button onClick = {addWebsite} className="transition-all duration-300 hover:bg-gray-200"> Add Website</button>
+                <h2 className="text-2xl text-center mb-4">Lists for {pageId}</h2>
+                <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" className="border p-2 mr-2"/>
+                <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="URL" className="border p-2 mr-2"/>
+                <input type="text" value={tag} onChange={(e) => setTag(e.target.value)} placeholder="Tag" className="border p-2 mr-2"/>
+                <button onClick={addWebsite}className="transition-all duration-300 hover:bg-gray-200 text-white px-4 py-2 rounded">Add Website</button>
             </div>
-
-            <ul className="mt-4">
-                    {websites[pageId]?.map((website, index) => (
-                        <li key={index} className="mb-2 grid grid-cols-2 gap-10">
-                        <a 
-                            href={website.url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="underline hover:underline-offset-4"
-                        >
-                            {website.name}
-                        </a>
-                        <span className="ml-4 text-gray-500">{website.tag}</span>
-                    </li>
+            
+            {websites[pageId] && websites[pageId].length > 0 ? (
+                <div>
+                    {websites[pageId].map((website, index) => (
+                        <div key={index} className="border p-2 mb-2">
+                            <a className="underline hover:underline-offset-4 " href = {website.url}>{website.name}</a>
+                            <span className="ml-4 text-gray-500">{website.tag}</span>
+                        </div>
                     ))}
-                </ul>
+                </div>
+            ) : (
+                <p>No websites added yet.</p>
+            )}
         </div>
     );
 };
